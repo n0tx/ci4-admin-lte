@@ -14,8 +14,7 @@
             <div><a href="/login/" class="btn btn-primary">Sign In Here</a></div>
           </div>
           <div class="col-lg-8 d-none d-lg-block">
-            <div style="background: url(https://images.unsplash.com/photo-1591686224641-2e07b13c0b51?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1834&q=80) center/cover;
-        min-height: 400px;"></div>
+            <canvas id="myChart"></canvas>
           </div>
         </div>
       </div>
@@ -61,6 +60,7 @@
       </div>
     </div>
   </div>
+  <?= view('shared/chartjs') ?>
 </body>
 
 </html>

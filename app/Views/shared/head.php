@@ -30,5 +30,7 @@
     <script defer src="https://code.highcharts.com/highcharts.js"></script>
     <script defer src="https://code.highcharts.com/modules/exporting.js"></script>
     <script defer src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 
 </head>
