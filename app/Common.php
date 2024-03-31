@@ -109,7 +109,7 @@ function post_files(Entity $entity, $name, string $folder = null)
 
 function humanize(Time $time)
 {
-    $now  = IntlCalendar::fromDateTime(Time::now($time->timezone)->toDateTimeString());
+    $now  = IntlCalendar::fromDateTime(Time::now($time->timezone)->toDateTimeString(), null);
     $time = $time->getCalendar()->getTime();
 
     $years   = $now->fieldDifference($time, IntlCalendar::FIELD_YEAR);
