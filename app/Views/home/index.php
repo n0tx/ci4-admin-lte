@@ -18,6 +18,13 @@
           </div>
         </div>
       </div>
+      <div class="card my-3">
+        <div class="row gutter-0">
+        <div class="col-lg-8 d-none d-lg-block">
+            <canvas id="myChartDynamic"></canvas>
+          </div>
+        </div>
+      </div>
       <div class="row">
         <?php foreach (['news', 'info'] as $cat) : ?>
           <div class="col-md-6">

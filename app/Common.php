@@ -3,6 +3,7 @@
 use CodeIgniter\Entity;
 use CodeIgniter\I18n\Time;
 use Config\Services;
+use Config\Database;
 
 /**
  * The goal of this file is to allow developers a location
@@ -167,4 +168,12 @@ function check_etag($path)
         header("HTTP/1.1 304 Not Modified");
         exit;
     }
+}
+
+function find_count_rows($search)
+{
+    $db      = Database::connect();
+    $builder = $db->table('article');
+    $count_rows = $builder->where(['category'=>$search])->countAllResults();
+    return $count_rows;
 }

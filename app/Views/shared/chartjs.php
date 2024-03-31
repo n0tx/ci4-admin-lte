@@ -19,4 +19,29 @@
             }
         }
     });
+
+    const ctxDynamic = document.getElementById('myChartDynamic');
+
+    new Chart(ctxDynamic, {
+        type: 'bar',
+        data: {
+            labels: ['Page', 'Info', 'News'],
+            datasets: [{
+                label: '# Number Of Categories',
+                data: [
+                    <?=find_count_rows('page')?>,
+                    <?=find_count_rows('info')?>,
+                    <?=find_count_rows('news')?>
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
 </script>
