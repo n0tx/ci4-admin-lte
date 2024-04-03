@@ -31,6 +31,7 @@
     <script defer src="https://code.highcharts.com/modules/exporting.js"></script>
     <script defer src="https://code.highcharts.com/modules/export-data.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/collect.js/4.36.1/collect.min.js"></script>
 
 
 </head>
