@@ -14,17 +14,28 @@
             <div><a href="/login/" class="btn btn-primary">Sign In Here</a></div>
           </div>
           <div class="col-lg-8 d-none d-lg-block">
+            <canvas id="myChartDynamicJs"></canvas>
+          </div>
+        </div>
+      </div>
+      
+      <!-- <div class="card my-3">
+        <div class="row gutter-0">
+        <div class="col-lg-8 d-none d-lg-block">
             <canvas id="myChart"></canvas>
           </div>
         </div>
-      </div>
-      <div class="card my-3">
-        <div class="row gutter-0">
-        <div class="col-lg-8 d-none d-lg-block">
-            <canvas id="myChartDynamic"></canvas>
-          </div>
-        </div>
-      </div>
+      </div> -->
+      
+     <!--  <div class="row">
+         <div class="col-md-6">
+           <div class="card">
+             <div class="card-body">
+               <canvas id="myChartDynamicJs"></canvas>
+             </div>
+           </div>
+         </div>
+     </div> -->
       <div class="row">
         <?php foreach (['news', 'info'] as $cat) : ?>
           <div class="col-md-6">

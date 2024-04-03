@@ -10,7 +10,7 @@ class FinancialPerformanceModel extends Model
     protected $table            = 'financial_performance';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
-    protected $returnType       = 'array';
+    protected $returnType = 'App\Entities\FinancialPerformance';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = ['penjualan_neto', 'laba_tahun_berjalan', 'total_aset', 'hasil_dividen', 'tahun'];

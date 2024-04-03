@@ -3,7 +3,9 @@
 use CodeIgniter\Entity;
 use CodeIgniter\I18n\Time;
 use Config\Services;
-use Config\Database;
+// use Config\Database;
+use App\Models\FinancialPerformanceModel;
+use App\Models\ArticleModel;
 
 /**
  * The goal of this file is to allow developers a location
@@ -172,8 +174,32 @@ function check_etag($path)
 
 function find_count_rows($search)
 {
+  /*
     $db      = Database::connect();
     $builder = $db->table('article');
     $count_rows = $builder->where(['category'=>$search])->countAllResults();
     return $count_rows;
+    */
+    /*
+    $model = new FinancialPerformanceModel();
+    return $model->findAll()->countAll();
+    */
+    $model = new ArticleModel(); 
+    return $model->where('category', $search)->countAllResults();
+}
+
+function get_financial_performance() 
+{
+  /*
+    $db      = Database::connect();
+    $builder = $db->table('financial_performance');
+    // $query = $builder->get()->getResult();
+    $query = $builder->get();
+    $result = json_encode($query->getResult());
+    echo $result;
+    return $result;
+    // return $query;
+    */
+    $model = new FinancialPerformanceModel(); 
+    return $model->findAll();
 }
