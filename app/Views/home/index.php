@@ -18,24 +18,49 @@
           </div>
         </div>
       </div>
-      
-      <!-- <div class="card my-3">
+      <div class="card my-3">
         <div class="row gutter-0">
-        <div class="col-lg-8 d-none d-lg-block">
-            <canvas id="myChart"></canvas>
+          <div class="col-lg-4 p-4 d-flex flex-column justify-content-center">
+            <h2>CodeIgniter 4 - Admin LTE 3 Template</h2>
+            <p>With many scriptlets to boost your web development</p>
+            <div><a href="/login/" class="btn btn-primary">Sign In Here</a></div>
+          </div>
+          <div class="col-lg-8 d-none d-lg-block">
+            <canvas id="labaTahunBerjalan"></canvas>
           </div>
         </div>
-      </div> -->
-      
-     <!--  <div class="row">
-         <div class="col-md-6">
-           <div class="card">
-             <div class="card-body">
-               <canvas id="myChartDynamicJs"></canvas>
-             </div>
-           </div>
-         </div>
-     </div> -->
+      </div>
+      <div class="card my-3">
+        <div class="row gutter-0">
+          <div class="col-lg-4 p-4 d-flex flex-column justify-content-center">
+            <h2>CodeIgniter 4 - Admin LTE 3 Template</h2>
+            <p>With many scriptlets to boost your web development</p>
+            <div><a href="/login/" class="btn btn-primary">Sign In Here</a></div>
+          </div>
+          <div class="col-lg-8 d-none d-lg-block">
+            <canvas id="totalAset"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="card my-3">
+        <div class="row gutter-0">
+          <div class="col-lg-4 p-4 d-flex flex-column justify-content-center">
+            <h2>CodeIgniter 4 - Admin LTE 3 Template</h2>
+            <p>With many scriptlets to boost your web development</p>
+            <div><a href="/login/" class="btn btn-primary">Sign In Here</a></div>
+          </div>
+          <div class="col-lg-8 d-none d-lg-block">
+            <canvas id="hasilDividen"></canvas>
+          </div>
+        </div>
+      </div>
+       <!-- <div class="card my-3">
+        <div class="row gutter-0">
+          <div class="col-lg-12 p-4 d-flex flex-column justify-content-center">
+            <canvas id="totalAset"></canvas>
+          </div>
+        </div>
+             </div> -->
       <div class="row">
         <?php foreach (['news', 'info'] as $cat) : ?>
           <div class="col-md-6">

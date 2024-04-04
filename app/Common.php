@@ -174,18 +174,25 @@ function check_etag($path)
 
 function find_count_rows($search)
 {
-  /*
     $db      = Database::connect();
     $builder = $db->table('article');
     $count_rows = $builder->where(['category'=>$search])->countAllResults();
     return $count_rows;
-    */
+
     /*
     $model = new FinancialPerformanceModel();
     return $model->findAll()->countAll();
     */
+    
+    /*
     $model = new ArticleModel(); 
     return $model->where('category', $search)->countAllResults();
+    */
+    /*
+    $db      = Database::connect();
+    $builder = $db->table('financial_performance');
+    return $query->countAll();
+    */
 }
 
 function get_financial_performance() 
