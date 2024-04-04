@@ -25,7 +25,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Dumping data for table `kinerja_keuangan`
+-- Dumping data for table `financial_performance`
 --
  
 INSERT INTO `financial_performance` (`id`, `penjualan_neto`, `laba_tahun_berjalan`, `total_aset`, `hasil_dividen`, `tahun`) VALUES
@@ -35,7 +35,7 @@ INSERT INTO `financial_performance` (`id`, `penjualan_neto`, `laba_tahun_berjala
 (4, 550.5, 72.5, 1361.6, 0.0046, '2022' ),
 (5, 546.1, 77.0, 1324.2, 0.0049, '2023');
 
- 
+ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
