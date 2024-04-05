@@ -156,8 +156,8 @@ class User extends BaseController
 		switch ($page) {
 			case 'list':
 				return view('user/finance/list', [
-					// 'data' => get_financial_performance($model), // oke grep all data
-					'data' => $model->findAll(), // oke grep all data 
+					'data' => get_financial_performance($model), // oke grep all data
+					// 'data' => $model->findAll(), // oke grep all data 
 					'page' => 'finance',
 				]);
 			case 'add':

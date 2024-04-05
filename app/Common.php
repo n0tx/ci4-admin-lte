@@ -3,7 +3,7 @@
 use CodeIgniter\Entity;
 use CodeIgniter\I18n\Time;
 use Config\Services;
-// use Config\Database;
+use Config\Database;
 use App\Models\FinancialPerformanceModel;
 use App\Models\ArticleModel;
 
@@ -208,5 +208,13 @@ function get_financial_performance()
     // return $query;
     */
     $model = new FinancialPerformanceModel(); 
-    return $model->findAll();
+   // return $model->findAll();
+    $query = "SELECT * FROM financial_performance";
+    // $query = "select sum(penjualan_neto) as penjualan_neto, sum(laba_tahun_berjalan) as laba_tahun_berjalan, sum(total_aset) as total_aset, sum(hasil_dividen) as hasil_dividen from financial_performance group by tahun order by tahun";
+        /*
+  $query=$this->db->query($query);
+      
+  return $query->result_array();
+  */
+  return $model->query($query)->getResultArray();
 }
