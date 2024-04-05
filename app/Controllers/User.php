@@ -6,6 +6,8 @@ use App\Entities\Article;
 use App\Entities\User as EntitiesUser;
 use App\Models\ArticleModel;
 use App\Models\UserModel;
+use App\Entities\FinancialPerformance;
+use App\Models\FinancialPerformanceModel;
 use CodeIgniter\Exceptions\PageNotFoundException;
 use Config\Services;
 
@@ -136,5 +138,40 @@ class User extends BaseController
 			'item' => $this->login,
 			'page' => 'profile',
 		]);
+	}
+	
+	public function finance($page = 'list', $id = null)
+	{
+		$model = new FinancialPerformanceModel();
+		if ($this->login->role !== 'admin') {
+			$model->withUser($this->login->id);
+		}
+		if ($this->request->getMethod() === 'post') {
+			if ($page === 'delete' && $model->delete($id)) {
+				return $this->response->redirect('/user/finance/');
+			} else if ($id = $model->processWeb($id)) {
+				return $this->response->redirect('/user/finance/');
+			}
+		}
+		switch ($page) {
+			case 'list':
+				return view('user/finance/list', [
+					// 'data' => get_financial_performance($model), // oke grep all data
+					'data' => $model->findAll(), // oke grep all data 
+					'page' => 'finance',
+				]);
+			case 'add':
+				return view('user/finance/edit', [
+					'item' => new FinancialPerformance()
+				]);
+			case 'edit':
+				if (!($item = $model->find($id))) {
+					throw new PageNotFoundException();
+				}
+				return view('user/finance/edit', [
+					'item' => $item
+				]);
+		}
+		throw new PageNotFoundException();
 	}
 }

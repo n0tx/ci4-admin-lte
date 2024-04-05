@@ -9,9 +9,9 @@
       <div class="card my-3">
         <div class="row gutter-0">
           <div class="col-lg-4 p-4 d-flex flex-column justify-content-center">
-            <h2>CodeIgniter 4 - Admin LTE 3 Template</h2>
-            <p>With many scriptlets to boost your web development</p>
-            <div><a href="/login/" class="btn btn-primary">Sign In Here</a></div>
+            <h4>Penjualan Neto</h4>
+            <p>2019 - 2023</p>
+            <!-- <div><a href="/login/" class="btn btn-primary">Sign In Here</a></div> -->
           </div>
           <div class="col-lg-8 d-none d-lg-block">
             <canvas id="myChartDynamicJs"></canvas>

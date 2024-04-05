@@ -16,6 +16,7 @@ class FinancialPerformance extends Migration
             `total_aset` DECIMAL(5,1) NULL DEFAULT NULL,
             `hasil_dividen` DECIMAL(5,5) NULL DEFAULT NULL,
             `tahun` VARCHAR(5) NULL DEFAULT NULL,
+            `user_id` INT(11) NULL DEFAULT NULL,
             PRIMARY KEY (`id`)
         )");
     }

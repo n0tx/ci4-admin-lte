@@ -28,12 +28,12 @@ SET time_zone = "+00:00";
 -- Dumping data for table `financial_performance`
 --
  
-INSERT INTO `financial_performance` (`id`, `penjualan_neto`, `laba_tahun_berjalan`, `total_aset`, `hasil_dividen`, `tahun`) VALUES
-(1, 588.5, 113.5, 1324.8, 0.0071, '2019' ),
-(2, 465.9, 74.8, 1342.9, 0.0047, '2020' ),
-(3, 514.9, 90.4, 1358.9, 0.0057, '2021'),
-(4, 550.5, 72.5, 1361.6, 0.0046, '2022' ),
-(5, 546.1, 77.0, 1324.2, 0.0049, '2023');
+INSERT INTO `financial_performance` (`id`, `penjualan_neto`, `laba_tahun_berjalan`, `total_aset`, `hasil_dividen`, `tahun`, `user_id`) VALUES
+(1, 588.5, 113.5, 1324.8, 0.0071, '2019', 1),
+(2, 465.9, 74.8, 1342.9, 0.0047, '2020', 1),
+(3, 514.9, 90.4, 1358.9, 0.0057, '2021', 1),
+(4, 550.5, 72.5, 1361.6, 0.0046, '2022', 1),
+(5, 546.1, 77.0, 1324.2, 0.0049, '2023', 1);
 
  COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

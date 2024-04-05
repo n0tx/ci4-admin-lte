@@ -70,6 +70,15 @@
             </p>
           </a>
         </li>
+        
+        <li class="nav-item">
+          <a href="/user/finance/" class="nav-link <?= ($page ?? '') === 'finance' ? 'active' : '' ?>">
+            <i class="nav-icon fas fa-scroll"></i>
+            <p>
+              Financial Performance
+            </p>
+          </a>
+        </li>
 
         <?php if (\Config\Services::login()->role === 'admin') : ?>
           <li class="nav-item">
