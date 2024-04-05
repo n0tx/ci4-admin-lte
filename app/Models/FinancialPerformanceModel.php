@@ -8,6 +8,14 @@ use Config\Services;
 
 class FinancialPerformanceModel extends Model
 {
+    public static $years = [
+        '2019',
+        '2020',
+        '2021',
+        '2022',
+        '2023',
+    ];
+
     protected $DBGroup          = 'default';
     protected $table            = 'financial_performance';
     protected $primaryKey       = 'id';

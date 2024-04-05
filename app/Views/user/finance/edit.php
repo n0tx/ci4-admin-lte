@@ -33,7 +33,12 @@
               </label>
               <label class="d-block mb-3">
                 <span>Tahun</span>
-                <input type="text" class="form-control" name="tahun" value="<?= esc($item->tahun) ?>" required>
+                <select name="tahun" class="form-control">
+                  <?= implode('', array_map(function ($x) use ($item) {
+                    return '<option ' . ($item->tahun === $x ? 'selected' : '') .
+                      ' value="' . $x . '">' . ucfirst($x) . '</option>';
+                  }, \App\Models\FinancialPerformanceModel::$years)) ?>
+                </select>
               </label>
               <div class="d-flex mb-3">
                 <input type="submit" value="Save" class="btn btn-primary mr-auto">

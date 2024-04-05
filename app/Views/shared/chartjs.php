@@ -1,5 +1,5 @@
 <script>   
-    const ctxDynamicJs = document.getElementById('myChartDynamicJs');
+    const penjualanNeto = document.getElementById('penjualanNeto');
     
     <?= $test = json_encode(get_financial_performance()); ?>
 
@@ -13,7 +13,7 @@
         return item.penjualan_neto
     }).all()
 
-    new Chart(ctxDynamicJs, {
+    new Chart(penjualanNeto, {
         type: 'bar',
         data: {
             labels: tahun,
