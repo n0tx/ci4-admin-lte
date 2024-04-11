@@ -8,14 +8,23 @@ use Config\Services;
 
 class FinancialPerformanceModel extends Model
 {
+  
     public static $years = [
-        '2019',
-        '2020',
-        '2021',
-        '2022',
-        '2023',
+        '2010','2011','2012',
+        '2013','2014','2015',
+        '2016','2017','2018',
+        '2019','2020','2021',
+        '2022','2023','2024'
     ];
-
+  /*
+  public static $years;
+  public function __construct()
+  {
+    // $years = range('2010', '2024');
+    $year = implode(',',  range(2010, 2024));
+  }
+  */
+  
     protected $DBGroup          = 'default';
     protected $table            = 'financial_performance';
     protected $primaryKey       = 'id';
@@ -70,5 +79,35 @@ class FinancialPerformanceModel extends Model
             return $id;
         }
         return false;
+    }
+    
+    public function checkDuplicateYear($id, $year)
+    {
+      $duplicate_year = "ini duplicate year";
+      var_dump($duplicate_year);
+      $exist = false;
+      if ($id === null) {
+        if ($this->isYearExist($year)) {
+          $exist = true;
+        }
+      } else {
+        $itemFromPost = (new FinancialPerformance($_POST));
+        $itemFromDb = $this->find($id);
+        if ($itemFromPost->tahun === $itemFromDb->tahun) {
+          $exist = true;
+        } else {
+          if (isYearExist($itemFromPost->tahun)) {
+            $exist = true;
+          }
+        }
+      }
+    }
+    
+    public function isYearExist($year) {
+      $model = new FinancialPerformanceModel();
+      if ($model->where('tahun', $year)->countAllResults() > 0) {
+        return true;
+      }
+      return false;
     }
 }

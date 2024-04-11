@@ -10,6 +10,7 @@ use App\Entities\FinancialPerformance;
 use App\Models\FinancialPerformanceModel;
 use CodeIgniter\Exceptions\PageNotFoundException;
 use Config\Services;
+use CodeIgniter\CLI\CLI;
 
 class User extends BaseController
 {
@@ -142,15 +143,39 @@ class User extends BaseController
 	
 	public function finance($page = 'list', $id = null)
 	{
+    // CLI::write('See this text immediatelyyyyy');
+    // $text = 'See this text immediately';
+    // var_dump($text);
+    $method = $this->request->getMethod();
 		$model = new FinancialPerformanceModel();
+		$test = $model->where('tahun', '2005')->countAllResults();
+		var_dump($test);
+		var_dump($method);
+		$hallo = "hallo";
+		var_dump($hallo);
 		if ($this->login->role !== 'admin') {
 			$model->withUser($this->login->id);
 		}
 		if ($this->request->getMethod() === 'post') {
+		  $masuk_post = "masuk post";
+			  var_dump($masuk_post);
 			if ($page === 'delete' && $model->delete($id)) {
+			  $masuk_delete = "masuk delete";
+			  var_dump($masuk_delete);
 				return $this->response->redirect('/user/finance/');
-			} else if ($id = $model->processWeb($id)) {
-				return $this->response->redirect('/user/finance/');
+			} else {
+			  $masuk_gak = "masuk gak";
+			  var_dump($masuk_gak);
+			  if ($model->checkDuplicateYear($id, $this->request->getPost('tahun'))) {
+			  echo '
+        <script>
+            alert("Duplicate years exist");
+            window.location="'.base_url('/user/finance/').'";
+        </script>';
+			  } else {
+			    $model->processWeb($id);
+			    return $this->response->redirect('/user/finance/');
+			  }
 			}
 		}
 		switch ($page) {
