@@ -81,10 +81,8 @@ class FinancialPerformanceModel extends Model
         return false;
     }
     
-    public function checkDuplicateYear($id, $year)
+    public function checkDuplicateYear($id = null, $year)
     {
-      $duplicate_year = "ini duplicate year";
-      var_dump($duplicate_year);
       $exist = false;
       if ($id === null) {
         if ($this->isYearExist($year)) {
@@ -96,11 +94,38 @@ class FinancialPerformanceModel extends Model
         if ($itemFromPost->tahun === $itemFromDb->tahun) {
           $exist = true;
         } else {
-          if (isYearExist($itemFromPost->tahun)) {
+          if ($this->isYearExist($year)) {
             $exist = true;
           }
         }
       }
+      return $exist;
+      /*
+      $itemFromPost = (new FinancialPerformance($_POST));
+      return $itemFromPost->tahun;
+      */
+      
+      // ok, ini jalan
+      // return 'hello';
+      
+      // pake ini dulu
+      // ok ini jalan
+      /*
+      $item = $this->find(11);
+      return $item->tahun;
+      */
+      
+      // baru pake ini, belum works
+      /*
+      $this->builder()->where('id', 2);
+      return $this['tahun'];
+      */
+      /*
+      $item = (new FinancialPerformance($_POST));
+      $item->user_id = Services::login()->id;
+      // return $this->insert($item);
+      return $item;
+      */
     }
     
     public function isYearExist($year) {
@@ -110,4 +135,11 @@ class FinancialPerformanceModel extends Model
       }
       return false;
     }
+  
+    /*
+    // buat test query dulu
+    // baru buat ambil POST
+  $this->builder()->where('user_id', $id);
+  return $this;
+  */
 }

@@ -143,16 +143,24 @@ class User extends BaseController
 	
 	public function finance($page = 'list', $id = null)
 	{
-    // CLI::write('See this text immediatelyyyyy');
+    // CLI::write('See this text immediately');
     // $text = 'See this text immediately';
     // var_dump($text);
     $method = $this->request->getMethod();
 		$model = new FinancialPerformanceModel();
-		$test = $model->where('tahun', '2005')->countAllResults();
+		$test = $model->where('tahun', 2020)->countAllResults();
+		if ($model->where('tahun', '2005')->countAllResults() > 0) {
+		  echo '
+        <script>
+            alert("Duplicate years exist");
+            window.location="'.base_url('/user/finance/').'";
+        </script>';
+		}
 		var_dump($test);
 		var_dump($method);
 		$hallo = "hallo";
 		var_dump($hallo);
+		// var_dump($model->checkDuplicateYear(1,2005));
 		if ($this->login->role !== 'admin') {
 			$model->withUser($this->login->id);
 		}
