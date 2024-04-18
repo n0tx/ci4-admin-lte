@@ -212,22 +212,23 @@ class User extends BaseController
 		throw new PageNotFoundException();
 	}
 	public function generateFinanceDatasToPdf() {
-	  $model = new FinancialPerformanceModel();
-	  $financial_performance = get_financial_performance($model);
-	  $options = new Options();
-    $paper = 'A4';
-    $orientation = "potrait";
-    $options->set('isRemoteEnabled', TRUE);
-    
-    $dompdf = new Dompdf($options);
-    $dompdf->setPaper($paper, $orientation);
-    
-    $html = view('user/finance/financial_performance', ['financial_performance' => $financial_performance]);
-    $dompdf->loadHtml($html);
-	  $dompdf->render();
+		$model = new FinancialPerformanceModel();
+		$financial_performance = get_financial_performance($model);
+		$options = new Options();
+		$paper = 'A4';
+		$orientation = "potrait";
+		$options->set('isRemoteEnabled', TRUE);
+		
+		$dompdf = new Dompdf($options);
+		$dompdf->setPaper($paper, $orientation);
+		
+		$html = view('user/finance/financial_performance', ['financial_performance' => $financial_performance]);
+		$dompdf->loadHtml($html);
+	  	$dompdf->render();
 	  
-	  $filename = "financial_performance_".date('YmdHis').".pdf";
-	  $dompdf->stream($filename, array('Attachment' => FALSE));
+		$filename = "financial_performance_".date('YmdHis').".pdf";
+		ob_end_clean();
+		$dompdf->stream($filename, array('Attachment' => FALSE));
 	}
 	
 }
