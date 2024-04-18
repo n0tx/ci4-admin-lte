@@ -19,6 +19,13 @@
                   'size' => 'btn-lg'
                 ]); ?>
               </div>
+              <div class="ml-auto">
+                <?= view('shared/button', [
+                  'actions' => ['generate_pdf'],
+                  'target' => '',
+                  'size' => 'btn-lg'
+                ]); ?>
+              </div>
             </div>
             <?= view('shared/table', [
               'data' => $data,

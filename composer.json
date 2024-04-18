@@ -6,9 +6,8 @@
 	"license": "MIT",
 	"require": {
 		"php": ">=7.4",
-		"codeigniter4/framework": "4.3.6"
-	},
-	"require-dev": {
+		"codeigniter4/framework": "4.3.6",
+		"dompdf/dompdf": "^2.0"
 	},
 	"scripts": {
 		"post-update-cmd": [

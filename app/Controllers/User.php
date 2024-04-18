@@ -11,6 +11,8 @@ use App\Models\FinancialPerformanceModel;
 use CodeIgniter\Exceptions\PageNotFoundException;
 use Config\Services;
 use CodeIgniter\CLI\CLI;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 class User extends BaseController
 {
@@ -204,7 +206,28 @@ class User extends BaseController
 				return view('user/finance/edit', [
 					'item' => $item
 				]);
+			case 'generate_pdf':
+				return $this->generateFinanceDatasToPdf();
 		}
 		throw new PageNotFoundException();
 	}
+	public function generateFinanceDatasToPdf() {
+	  $model = new FinancialPerformanceModel();
+	  $financial_performance = get_financial_performance($model);
+	  $options = new Options();
+    $paper = 'A4';
+    $orientation = "potrait";
+    $options->set('isRemoteEnabled', TRUE);
+    
+    $dompdf = new Dompdf($options);
+    $dompdf->setPaper($paper, $orientation);
+    
+    $html = view('user/finance/financial_performance', ['financial_performance' => $financial_performance]);
+    $dompdf->loadHtml($html);
+	  $dompdf->render();
+	  
+	  $filename = "financial_performance_".date('YmdHis').".pdf";
+	  $dompdf->stream($filename, array('Attachment' => FALSE));
+	}
+	
 }
