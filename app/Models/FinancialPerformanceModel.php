@@ -81,7 +81,7 @@ class FinancialPerformanceModel extends Model
         return false;
     }
     
-    public function checkDuplicateYear($id = null, $year)
+    public function checkDuplicateYear(int $id = null, $year)
     {
       $exist = false;
       if ($id === null) {
