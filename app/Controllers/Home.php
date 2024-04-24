@@ -6,6 +6,7 @@ use App\Libraries\Recaptha;
 use App\Models\ArticleModel;
 use App\Models\UserModel;
 use CodeIgniter\Exceptions\PageNotFoundException;
+use App\Models\FinancialPerformanceModel;
 use CodeIgniter\Files\Exceptions\FileNotFoundException;
 
 class Home extends BaseController
@@ -16,7 +17,134 @@ class Home extends BaseController
 			'news' => find_with_filter((new ArticleModel())->withCategory('news'), 2),
 			'info' => find_with_filter((new ArticleModel())->withCategory('info'), 2),
 			'page' => 'home',
+			'image_url' => $this->getImageUrlTest()
 		]);
+	}
+
+	public function getImageUrlTest() {
+		
+		/*
+		// ok ini jalan, set static contoh dari chartjs website
+		$chart = '{
+			"type": "bar",
+			"data": {
+			  "labels": [ "January", "February", "March", "April", "May", "June", "July"
+			  ],
+			  "datasets": [
+				{
+				  "label": "My data",
+				  "fillColor": "rgba(220,220,220,0.5)",
+				  "strokeColor": "rgba(220,220,220,1)",
+				  "pointColor": "rgba(220,220,220,1)",
+				  "pointStrokeColor": "#fff",
+				  "data": [ 65, 59, 90, 81, 56, 55, 40 ],
+				  "bezierCurve": false
+				}
+			  ]
+			}
+		}';
+		$encoded = urlencode($chart);
+		$image_url = "https://quickchart.io/chart?c=" . $encoded;
+		return $image_url;
+		*/
+
+		$model = new FinancialPerformanceModel();
+		$financial_performance = get_financial_performance($model);
+
+		$tahun = array();
+		$penjualan_neto = array();
+
+
+		for ($i = 0; $i < count($financial_performance); $i++) {
+			array_push($tahun, $financial_performance[$i]->tahun);
+			array_push($penjualan_neto, $financial_performance[$i]->penjualan_neto);
+		}
+
+		$chart = '{
+			"type": "bar",
+			"data": {
+
+				"labels": '. json_encode($tahun) .',
+			  "datasets": [
+				{
+				  "label": "# Penjualan Neto",
+				  "fillColor": "rgba(220,220,220,0.5)",
+				  "strokeColor": "rgba(220,220,220,1)",
+				  "pointColor": "rgba(220,220,220,1)",
+				  "pointStrokeColor": "#fff",
+				  "data": '. json_encode($penjualan_neto) .',
+				  "bezierCurve": false
+				}
+			  ]
+			}
+		}';
+		$encoded = urlencode($chart);
+		$image_url = "https://quickchart.io/chart?c=" . $encoded;
+		return $image_url;
+	}
+
+	public function getImageUrl() {
+		$kinerja_keuangan = json_encode(get_financial_performance());
+		// php get tahun
+		// php get penjualan_neto
+		// baru taro di $penjualanNeto
+
+		$tahun = "";
+		$penjualan_neto = "";
+		$penjualan_neto_chart = "";
+		$encoded = urlencode($penjualan_neto_chart);
+    	$image_url = "https://quickchart.io/chart?c=" . $encoded;
+		return $image_url;
+
+		echo "
+		<script type=\"text/javascript\">
+			let kinerja_keuangan = <?= $kinerja_keuangan ?>
+
+			let tahun = collect(kinerja_keuangan).map(function(item) {
+				return item.tahun
+			}).all()
+
+			let penjualan_neto = collect(kinerja_keuangan).map(function(item) {
+				return item.penjualan_neto
+			}).all()
+		});
+		</script>
+		";
+		$penjualanNeto = "{
+			type: 'bar',
+			data: {
+				labels: tahun,
+				datasets: [{
+					label: '# Penjualan Neto',
+					data: penjualan_neto,
+					backgroundColor: [
+					  'rgba(255, 99, 132, 0.2)',
+								'rgba(54, 162, 235, 0.2)',
+								'rgba(255, 206, 86, 0.2)',
+								'rgba(75, 192, 192, 0.2)',
+								'rgba(153, 102, 255, 0.2)'
+					],
+					borderColor: [
+								'rgba(255,99,132,1)',
+								'rgba(54, 162, 235, 1)',
+								'rgba(255, 206, 86, 1)',
+								'rgba(75, 192, 192, 1)',
+								'rgba(153, 102, 255, 1)'
+					],
+					borderWidth: 1
+				}]
+			},
+			options: {
+				scales: {
+					y: {
+						beginAtZero: true
+					}
+				}
+			}
+		}";
+		$encoded = urlencode($penjualanNeto);
+    	$imageUrl = "https://quickchart.io/chart?c=" . $encoded;
+		return $imageUrl;
 	}
 
 	public function login()

@@ -13,6 +13,7 @@ use Config\Services;
 use CodeIgniter\CLI\CLI;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use CodeIgniter\Files\File;
 
 class User extends BaseController
 {
@@ -211,18 +212,101 @@ class User extends BaseController
 		}
 		throw new PageNotFoundException();
 	}
+	public function getChartUrlEncoded($financial_performance) {
+		
+		$chart_datas = array();
+		$tahun = array();
+		$penjualan_neto = array();
+		$laba_tahun_berjalan = array();
+		$total_aset = array();
+		$hasil_dividen = array();
+		
+		for ($i = 0; $i < count($financial_performance); $i++) {
+			// generate url chartio, 5x puter, array url_encoded
+			// save file, 5x puter, array url_local_file
+			// get url push to result array
+			
+			array_push($tahun,  $financial_performance[$i]->tahun);
+			array_push($penjualan_neto,  $financial_performance[$i]->penjualan_neto);
+			array_push($laba_tahun_berjalan,  $financial_performance[$i]->laba_tahun_berjalan);
+			array_push($total_aset,  $financial_performance[$i]->total_aset);
+			array_push($hasil_dividen,  $financial_performance[$i]->hasil_dividen);
+		}
+
+		$chart_datas['tahun'] = $tahun;
+		$chart_datas['penjualan_neto'] = $penjualan_neto;
+		$chart_datas['laba_tahun_berjalan'] = $laba_tahun_berjalan;
+		$chart_datas['total_aset'] = $total_aset;
+		$chart_datas['hasil_dividen'] = $hasil_dividen;
+
+		return $this->getImageUrls($chart_datas);
+	}
+
+	public function saveChartImage($chart_url_encodes) {
+		
+		$image_urls = array();
+		$client = \Config\Services::curlrequest([
+			'baseURI' => 'https://quickchart.io/',
+		]);
+
+		// get all url path saved local image file
+		for ($i=0; $i < count($chart_url_encodes); $i++) {
+
+			$relative_path = 'public/uploads/charts/';
+			$image_name = 'chart-' . date('YmdHis') . '.png';
+			$full_path = ROOTPATH . $relative_path . $image_name;
+
+			$response = $client->get($chart_url_encodes[$i]);
+			$file = $response->getBody();
+			
+			if (file_put_contents($full_path, $file)) {
+				chmod($full_path, 0777);
+				array_push($image_urls, str_replace("public/", "", $relative_path) . $image_name);
+			}
+		}
+		return $image_urls;
+	}
+
 	public function generateFinanceDatasToPdf() {
 		$model = new FinancialPerformanceModel();
 		$financial_performance = get_financial_performance($model);
+		
+		$chart_url_encodes = $this->getChartUrlEncoded($financial_performance);
+		$image_urls = $this->saveChartImage($chart_url_encodes);
+		
 		$options = new Options();
 		$paper = 'A4';
-		$orientation = "potrait";
-		$options->set('isRemoteEnabled', TRUE);
+		// $orientation = "potrait"; // ini gak tampil semua lebar chart nya
+		$orientation = "landscape"; // ini tampil utuh tapi pagenya makan 1 halaman
+		$options->set('isRemoteEnabled', true); // cari buat set gambar itu
+		// klo gak html di chartjsnya
+		// kykna di htmlnya, coba aja
 		
 		$dompdf = new Dompdf($options);
 		$dompdf->setPaper($paper, $orientation);
 		
-		$html = view('user/finance/financial_performance', ['financial_performance' => $financial_performance]);
+		// $html = view('user/finance/financial_performance', ['financial_performance' => $financial_performance]);
+
+		$html = view('user/finance/financial_performance', [
+			'financial_performance' => $financial_performance,
+			'image_urls' => $image_urls // sementara ini array fullpath aja        
+		]);
+
+		/*
+		
+		$html = view(
+			'user/finance/financial_performance', [
+				'financial_performance' => $financial_performance,
+				'penjualan_neto_image' => $chart_images['penjualan_neto'],
+				'b_image' => $chart_images['b'],
+				'c_image' => $chart_images['c'],
+				'd_image' => $chart_images['d']]);
+		
+				$html = view('user/finance/financial_performance', [
+				'financial_performance' => $financial_performance,
+				'image_urls' => $image_urls
+			]);
+		*/
 		$dompdf->loadHtml($html);
 	  	$dompdf->render();
 	  
@@ -230,5 +314,239 @@ class User extends BaseController
 		ob_end_clean();
 		$dompdf->stream($filename, array('Attachment' => FALSE));
 	}
+
+	public function getImageUrls($chart_datas) {
+		$image_urls = array();
+		
+		$tahun = $chart_datas['tahun'];
+		$penjualan_neto = $chart_datas['penjualan_neto'];
+		$laba_tahun_berjalan = $chart_datas['laba_tahun_berjalan'];
+		$total_aset = $chart_datas['total_aset'];
+		$hasil_dividen = $chart_datas['hasil_dividen'];
+
+		$png = "&f=png";
+
+		$background_color = json_encode([
+			"rgba(255, 99, 132, 0.2)",
+			"rgba(54, 162, 235, 0.2)",
+			"rgba(255, 206, 86, 0.2)",
+			"rgba(75, 192, 192, 0.2)",
+			"rgba(153, 102, 255, 0.2)"
+		]);
+
+		$border_color = json_encode([
+			"rgba(255,99,132,1)",
+			"rgba(54, 162, 235, 1)",
+			"rgba(255, 206, 86, 1)",
+			"rgba(75, 192, 192, 1)",
+			"rgba(153, 102, 255, 1)"
+		]);
+
+		$border_width = 1;
+		$begin_at_zero = true;
+
+		// Penjualan Neto
+		$penjualan_neto_chart = '
+		{
+			"type": "bar",
+			"data": {
+				"labels": ' . json_encode($tahun) . ',
+				"datasets": [{
+					"label": "# Penjualan Neto",
+					"data": ' . json_encode($penjualan_neto) . ',
+					"backgroundColor": ' . json_encode($background_color) . ',
+					"borderColor": ' . json_encode($border_color) . ',
+					"borderWidth": ' . json_encode($border_width) . ',
+				}]
+			},
+			"options": {
+				"scales": {
+					"y": {
+						"beginAtZero": ' . json_encode($begin_at_zero) . '
+					}
+				}
+			}
+		}';
+		$encoded = urlencode($penjualan_neto_chart);
+		$penjualan_neto_image_url = "chart?c=" . $encoded;
+		$penjualan_neto_image_url .= $png;
+		array_push($image_urls, $penjualan_neto_image_url);
+		
+		// Laba Tahun Berjalan
+		$laba_tahun_berjalan_chart = '
+		{
+			"type": "bar",
+			"data": {
+				"labels": ' . json_encode($tahun) . ',
+				"datasets": [{
+					"label": "# Laba Tahun Berjalan",
+					"data": ' . json_encode($laba_tahun_berjalan) . ',
+					"backgroundColor": ' . json_encode($background_color) . ',
+					"borderColor": ' . json_encode($border_color) . ',
+					"borderWidth": ' . json_encode($border_width) . ',
+				}]
+			},
+			"options": {
+				"scales": {
+					"y": {
+						"beginAtZero": ' . json_encode($begin_at_zero) . '
+					}
+				}
+			}
+		}';
+		$encoded = urlencode($laba_tahun_berjalan_chart);
+		$laba_tahun_berjalan_image_url = "chart?c=" . $encoded;
+		$laba_tahun_berjalan_image_url .= $png;
+		array_push($image_urls, $laba_tahun_berjalan_image_url);
+		
+		// Total Aset
+		$total_aset_chart = '
+		{
+			"type": "bar",
+			"data": {
+				"labels": ' . json_encode($tahun) . ',
+				"datasets": [{
+					"label": "# Total Aset",
+					"data": ' . json_encode($total_aset) . ',
+					"backgroundColor": ' . json_encode($background_color) . ',
+					"borderColor": ' . json_encode($border_color) . ',
+					"borderWidth": ' . json_encode($border_width) . ',
+				}]
+			},
+			"options": {
+				"scales": {
+					"y": {
+						"beginAtZero": ' . json_encode($begin_at_zero) . '
+					}
+				}
+			}
+		}';
+		$encoded = urlencode($total_aset_chart);
+		$total_aset_image_url = "chart?c=" . $encoded;
+		$total_aset_image_url .= $png;
+		array_push($image_urls, $total_aset_image_url);
+		
+		// Hasil Dividen
+		$hasil_dividen_chart = '
+		{
+			"type": "bar",
+			"data": {
+				"labels": ' . json_encode($tahun) . ',
+				"datasets": [{
+					"label": "# Total Aset",
+					"data": ' . json_encode($hasil_dividen) . ',
+					"backgroundColor": ' . json_encode($background_color) . ',
+					"borderColor": ' . json_encode($border_color) . ',
+					"borderWidth": ' . json_encode($border_width) . ',
+				}]
+			},
+			"options": {
+				"scales": {
+					"y": {
+						"beginAtZero": ' . json_encode($begin_at_zero) . '
+					}
+				}
+			}
+		}';
+		$encoded = urlencode($hasil_dividen_chart);
+		$hasil_dividen_image_url = "chart?c=" . $encoded;
+		$hasil_dividen_image_url .= $png;
+		array_push($image_urls, $hasil_dividen_image_url);
+		
+		return $image_urls;
+	}
 	
+	public function getImageUrlsOld() {
+		$image_urls = array();
+		
+		$model = new FinancialPerformanceModel();
+		$financial_performance = get_financial_performance($model);
+
+		$tahun = array();
+		$penjualan_neto = array();
+		$laba_tahun_berjalan = array();
+
+		for ($i = 0; $i < count($financial_performance); $i++) {
+			array_push($tahun, $financial_performance[$i]->tahun);
+			array_push($penjualan_neto, $financial_performance[$i]->penjualan_neto);
+			array_push($laba_tahun_berjalan, $financial_performance[$i]->laba_tahun_berjalan);
+		}
+
+		$background_color = json_encode([
+			"rgba(255, 99, 132, 0.2)",
+			"rgba(54, 162, 235, 0.2)",
+			"rgba(255, 206, 86, 0.2)",
+			"rgba(75, 192, 192, 0.2)",
+			"rgba(153, 102, 255, 0.2)"
+		]);
+		$border_color = json_encode([
+			"rgba(255,99,132,1)",
+			"rgba(54, 162, 235, 1)",
+			"rgba(255, 206, 86, 1)",
+			"rgba(75, 192, 192, 1)",
+			"rgba(153, 102, 255, 1)"
+		]);
+		$border_width = 1;
+		$begin_at_zero = true;
+
+		// Penjualan Neto
+		$penjualan_neto_chart = '
+		{
+			"type": "bar",
+			"data": {
+				"labels": ' . json_encode($tahun) . ',
+				"datasets": [{
+					"label": "# Penjualan Neto",
+					"data": ' . json_encode($penjualan_neto) . ',
+					"backgroundColor": ' . json_encode($background_color) . ',
+					"borderColor": ' . json_encode($border_color) . ',
+					"borderWidth": ' . json_encode($border_width) . ',
+				}]
+			},
+			"options": {
+				"scales": {
+					"y": {
+						"beginAtZero": ' . json_encode($begin_at_zero) . '
+					}
+				}
+			}
+		}';
+		$encoded = urlencode($penjualan_neto_chart);
+		$penjualan_neto_image_url = "https://quickchart.io/chart?c=" . $encoded;
+		array_push($image_urls, $penjualan_neto_image_url);
+		
+		// Laba Tahun Berjalan
+		$laba_tahun_berjalan_chart = '
+		{
+			"type": "bar",
+			"data": {
+				"labels": ' . json_encode($tahun) . ',
+				"datasets": [{
+					"label": "# Penjualan Neto",
+					"data": ' . json_encode($laba_tahun_berjalan) . ',
+					"backgroundColor": ' . json_encode($background_color) . ',
+					"borderColor": ' . json_encode($border_color) . ',
+					"borderWidth": ' . json_encode($border_width) . ',
+				}]
+			},
+			"options": {
+				"scales": {
+					"y": {
+						"beginAtZero": ' . json_encode($begin_at_zero) . '
+					}
+				}
+			}
+		}';
+		$encoded = urlencode($laba_tahun_berjalan_chart);
+		$laba_tahun_berjalan_image_url = "https://quickchart.io/chart?c=" . $encoded;
+		array_push($image_urls, $laba_tahun_berjalan_image_url);
+		
+		return $image_urls;
+	}
+	// cari ambil semua tahun setiap row
+	// cari ambil semua Penjualan Neto setiap row
+	// masukin ke array coba render ke pdf
+
+	// jadi looping nanti berdasarkan tahun
+	// yang di looping semua chart pada tahun tsb
 }
