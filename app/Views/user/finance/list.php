@@ -12,19 +12,20 @@
           <div class="card-body">
             <?php /** @var \App\Entities\FinancialPerformance[] $data */ ?>
             <div class="d-flex">
-              <div class="ml-auto">
+              <div class="ml-left">
                 <?= view('shared/button', [
-                  'actions' => ['add'],
+                  'actions' => ['generate_pdf'],
                   'target' => '',
                   'size' => 'btn-lg'
                 ]); ?>
               </div>
               <div class="ml-auto">
                 <?= view('shared/button', [
-                  'actions' => ['generate_pdf'],
+                  'actions' => ['add'],
                   'target' => '',
                   'size' => 'btn-lg'
                 ]); ?>
+                
               </div>
             </div>
             <?= view('shared/table', [
