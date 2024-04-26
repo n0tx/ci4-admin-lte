@@ -62,14 +62,6 @@
             </p>
           </a>
         </li>
-        <li class="nav-item">
-          <a href="/user/article/" class="nav-link <?= ($page ?? '') === 'article' ? 'active' : '' ?>">
-            <i class="nav-icon fas fa-scroll"></i>
-            <p>
-              Articles
-            </p>
-          </a>
-        </li>
         
         <li class="nav-item">
           <a href="/user/finance/" class="nav-link <?= ($page ?? '') === 'finance' ? 'active' : '' ?>">
