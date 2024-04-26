@@ -14,5 +14,7 @@
       td{
         text-align: center;
       }
+      .page { width: 100%; height: 100%;}
+      .page_break { page-break-after: always; }
     </style>
 </head>

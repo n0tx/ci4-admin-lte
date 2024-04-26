@@ -17,7 +17,7 @@ function ImageToDataUrl(String $filename) : String {
 
 
 <?php foreach ($image_urls as $image_url) : ?>
-    <div>
+    <div class=page_break>
         <img src="<?= ImageToDataUrl($image_url); ?>">
     </div>
 <?php endforeach ?>

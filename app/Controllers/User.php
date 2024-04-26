@@ -10,10 +10,8 @@ use App\Entities\FinancialPerformance;
 use App\Models\FinancialPerformanceModel;
 use CodeIgniter\Exceptions\PageNotFoundException;
 use Config\Services;
-use CodeIgniter\CLI\CLI;
 use Dompdf\Dompdf;
 use Dompdf\Options;
-use CodeIgniter\Files\File;
 
 class User extends BaseController
 {
@@ -146,9 +144,6 @@ class User extends BaseController
 	
 	public function finance($page = 'list', $id = null)
 	{
-    // CLI::write('See this text immediately');
-    // $text = 'See this text immediately';
-    // var_dump($text);
     $method = $this->request->getMethod();
 		$model = new FinancialPerformanceModel();
 		$test = $model->where('tahun', 2020)->countAllResults();
@@ -324,30 +319,28 @@ class User extends BaseController
 		$total_aset = $chart_datas['total_aset'];
 		$hasil_dividen = $chart_datas['hasil_dividen'];
 
-		$png = "&f=png";
 
-		$background_color = json_encode([
+		$background_color = [
 			"rgba(255, 99, 132, 0.2)",
 			"rgba(54, 162, 235, 0.2)",
 			"rgba(255, 206, 86, 0.2)",
 			"rgba(75, 192, 192, 0.2)",
 			"rgba(153, 102, 255, 0.2)"
-		]);
+		];
 
-		$border_color = json_encode([
+		$border_color = [
 			"rgba(255,99,132,1)",
 			"rgba(54, 162, 235, 1)",
 			"rgba(255, 206, 86, 1)",
 			"rgba(75, 192, 192, 1)",
 			"rgba(153, 102, 255, 1)"
-		]);
+		];
 
 		$border_width = 1;
 		$begin_at_zero = true;
 
 		// Penjualan Neto
-		$penjualan_neto_chart = '
-		{
+		$penjualan_neto_chart = '{
 			"type": "bar",
 			"data": {
 				"labels": ' . json_encode($tahun) . ',
@@ -356,20 +349,19 @@ class User extends BaseController
 					"data": ' . json_encode($penjualan_neto) . ',
 					"backgroundColor": ' . json_encode($background_color) . ',
 					"borderColor": ' . json_encode($border_color) . ',
-					"borderWidth": ' . json_encode($border_width) . ',
+					"borderWidth": ' . $border_width . ',
 				}]
 			},
 			"options": {
 				"scales": {
 					"y": {
-						"beginAtZero": ' . json_encode($begin_at_zero) . '
+						"beginAtZero": ' . $begin_at_zero . '
 					}
 				}
 			}
 		}';
 		$encoded = urlencode($penjualan_neto_chart);
 		$penjualan_neto_image_url = "chart?c=" . $encoded;
-		$penjualan_neto_image_url .= $png;
 		array_push($image_urls, $penjualan_neto_image_url);
 		
 		// Laba Tahun Berjalan
@@ -383,20 +375,19 @@ class User extends BaseController
 					"data": ' . json_encode($laba_tahun_berjalan) . ',
 					"backgroundColor": ' . json_encode($background_color) . ',
 					"borderColor": ' . json_encode($border_color) . ',
-					"borderWidth": ' . json_encode($border_width) . ',
+					"borderWidth": ' . $border_width . ',
 				}]
 			},
 			"options": {
 				"scales": {
 					"y": {
-						"beginAtZero": ' . json_encode($begin_at_zero) . '
+						"beginAtZero": ' . $begin_at_zero . '
 					}
 				}
 			}
 		}';
 		$encoded = urlencode($laba_tahun_berjalan_chart);
 		$laba_tahun_berjalan_image_url = "chart?c=" . $encoded;
-		$laba_tahun_berjalan_image_url .= $png;
 		array_push($image_urls, $laba_tahun_berjalan_image_url);
 		
 		// Total Aset
@@ -410,20 +401,19 @@ class User extends BaseController
 					"data": ' . json_encode($total_aset) . ',
 					"backgroundColor": ' . json_encode($background_color) . ',
 					"borderColor": ' . json_encode($border_color) . ',
-					"borderWidth": ' . json_encode($border_width) . ',
+					"borderWidth": ' . $border_width . ',
 				}]
 			},
 			"options": {
 				"scales": {
 					"y": {
-						"beginAtZero": ' . json_encode($begin_at_zero) . '
+						"beginAtZero": ' . $begin_at_zero . '
 					}
 				}
 			}
 		}';
 		$encoded = urlencode($total_aset_chart);
 		$total_aset_image_url = "chart?c=" . $encoded;
-		$total_aset_image_url .= $png;
 		array_push($image_urls, $total_aset_image_url);
 		
 		// Hasil Dividen
@@ -433,120 +423,26 @@ class User extends BaseController
 			"data": {
 				"labels": ' . json_encode($tahun) . ',
 				"datasets": [{
-					"label": "# Total Aset",
+					"label": "# Hasil Dividen",
 					"data": ' . json_encode($hasil_dividen) . ',
 					"backgroundColor": ' . json_encode($background_color) . ',
 					"borderColor": ' . json_encode($border_color) . ',
-					"borderWidth": ' . json_encode($border_width) . ',
+					"borderWidth": ' . $border_width . ',
 				}]
 			},
 			"options": {
 				"scales": {
 					"y": {
-						"beginAtZero": ' . json_encode($begin_at_zero) . '
+						"beginAtZero": ' . $begin_at_zero . '
 					}
 				}
 			}
 		}';
 		$encoded = urlencode($hasil_dividen_chart);
 		$hasil_dividen_image_url = "chart?c=" . $encoded;
-		$hasil_dividen_image_url .= $png;
 		array_push($image_urls, $hasil_dividen_image_url);
 		
 		return $image_urls;
 	}
-	
-	public function getImageUrlsOld() {
-		$image_urls = array();
-		
-		$model = new FinancialPerformanceModel();
-		$financial_performance = get_financial_performance($model);
 
-		$tahun = array();
-		$penjualan_neto = array();
-		$laba_tahun_berjalan = array();
-
-		for ($i = 0; $i < count($financial_performance); $i++) {
-			array_push($tahun, $financial_performance[$i]->tahun);
-			array_push($penjualan_neto, $financial_performance[$i]->penjualan_neto);
-			array_push($laba_tahun_berjalan, $financial_performance[$i]->laba_tahun_berjalan);
-		}
-
-		$background_color = json_encode([
-			"rgba(255, 99, 132, 0.2)",
-			"rgba(54, 162, 235, 0.2)",
-			"rgba(255, 206, 86, 0.2)",
-			"rgba(75, 192, 192, 0.2)",
-			"rgba(153, 102, 255, 0.2)"
-		]);
-		$border_color = json_encode([
-			"rgba(255,99,132,1)",
-			"rgba(54, 162, 235, 1)",
-			"rgba(255, 206, 86, 1)",
-			"rgba(75, 192, 192, 1)",
-			"rgba(153, 102, 255, 1)"
-		]);
-		$border_width = 1;
-		$begin_at_zero = true;
-
-		// Penjualan Neto
-		$penjualan_neto_chart = '
-		{
-			"type": "bar",
-			"data": {
-				"labels": ' . json_encode($tahun) . ',
-				"datasets": [{
-					"label": "# Penjualan Neto",
-					"data": ' . json_encode($penjualan_neto) . ',
-					"backgroundColor": ' . json_encode($background_color) . ',
-					"borderColor": ' . json_encode($border_color) . ',
-					"borderWidth": ' . json_encode($border_width) . ',
-				}]
-			},
-			"options": {
-				"scales": {
-					"y": {
-						"beginAtZero": ' . json_encode($begin_at_zero) . '
-					}
-				}
-			}
-		}';
-		$encoded = urlencode($penjualan_neto_chart);
-		$penjualan_neto_image_url = "https://quickchart.io/chart?c=" . $encoded;
-		array_push($image_urls, $penjualan_neto_image_url);
-		
-		// Laba Tahun Berjalan
-		$laba_tahun_berjalan_chart = '
-		{
-			"type": "bar",
-			"data": {
-				"labels": ' . json_encode($tahun) . ',
-				"datasets": [{
-					"label": "# Penjualan Neto",
-					"data": ' . json_encode($laba_tahun_berjalan) . ',
-					"backgroundColor": ' . json_encode($background_color) . ',
-					"borderColor": ' . json_encode($border_color) . ',
-					"borderWidth": ' . json_encode($border_width) . ',
-				}]
-			},
-			"options": {
-				"scales": {
-					"y": {
-						"beginAtZero": ' . json_encode($begin_at_zero) . '
-					}
-				}
-			}
-		}';
-		$encoded = urlencode($laba_tahun_berjalan_chart);
-		$laba_tahun_berjalan_image_url = "https://quickchart.io/chart?c=" . $encoded;
-		array_push($image_urls, $laba_tahun_berjalan_image_url);
-		
-		return $image_urls;
-	}
-	// cari ambil semua tahun setiap row
-	// cari ambil semua Penjualan Neto setiap row
-	// masukin ke array coba render ke pdf
-
-	// jadi looping nanti berdasarkan tahun
-	// yang di looping semua chart pada tahun tsb
 }
