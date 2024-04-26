@@ -146,7 +146,7 @@ class User extends BaseController
 	{
     $method = $this->request->getMethod();
 		$model = new FinancialPerformanceModel();
-		$test = $model->where('tahun', 2020)->countAllResults();
+		// $test = $model->where('tahun', 2020)->countAllResults();
 		if ($model->where('tahun', '2005')->countAllResults() > 0) {
 		  echo '
         <script>
@@ -154,24 +154,16 @@ class User extends BaseController
             window.location="'.base_url('/user/finance/').'";
         </script>';
 		}
-		var_dump($test);
-		var_dump($method);
-		$hallo = "hallo";
-		var_dump($hallo);
-		// var_dump($model->checkDuplicateYear(1,2005));
+		// var_dump($test);
+		// var_dump($method);
+
 		if ($this->login->role !== 'admin') {
 			$model->withUser($this->login->id);
 		}
 		if ($this->request->getMethod() === 'post') {
-		  $masuk_post = "masuk post";
-			  var_dump($masuk_post);
 			if ($page === 'delete' && $model->delete($id)) {
-			  $masuk_delete = "masuk delete";
-			  var_dump($masuk_delete);
 				return $this->response->redirect('/user/finance/');
 			} else {
-			  $masuk_gak = "masuk gak";
-			  var_dump($masuk_gak);
 			  if ($model->checkDuplicateYear($id, $this->request->getPost('tahun'))) {
 			  echo '
         <script>
@@ -187,8 +179,7 @@ class User extends BaseController
 		switch ($page) {
 			case 'list':
 				return view('user/finance/list', [
-					'data' => get_financial_performance($model), // oke grep all data
-					// 'data' => $model->findAll(), // oke grep all data 
+					'data' => get_financial_performance($model),
 					'page' => 'finance',
 				]);
 			case 'add':
@@ -217,10 +208,6 @@ class User extends BaseController
 		$hasil_dividen = array();
 		
 		for ($i = 0; $i < count($financial_performance); $i++) {
-			// generate url chartio, 5x puter, array url_encoded
-			// save file, 5x puter, array url_local_file
-			// get url push to result array
-			
 			array_push($tahun,  $financial_performance[$i]->tahun);
 			array_push($penjualan_neto,  $financial_performance[$i]->penjualan_neto);
 			array_push($laba_tahun_berjalan,  $financial_performance[$i]->laba_tahun_berjalan);
@@ -271,37 +258,17 @@ class User extends BaseController
 		
 		$options = new Options();
 		$paper = 'A4';
-		// $orientation = "potrait"; // ini gak tampil semua lebar chart nya
-		$orientation = "landscape"; // ini tampil utuh tapi pagenya makan 1 halaman
-		$options->set('isRemoteEnabled', true); // cari buat set gambar itu
-		// klo gak html di chartjsnya
-		// kykna di htmlnya, coba aja
+		$orientation = "landscape";
+		$options->set('isRemoteEnabled', true);
 		
 		$dompdf = new Dompdf($options);
 		$dompdf->setPaper($paper, $orientation);
 		
-		// $html = view('user/finance/financial_performance', ['financial_performance' => $financial_performance]);
-
 		$html = view('user/finance/financial_performance', [
 			'financial_performance' => $financial_performance,
-			'image_urls' => $image_urls // sementara ini array fullpath aja        
+			'image_urls' => $image_urls
 		]);
 
-		/*
-		
-		$html = view(
-			'user/finance/financial_performance', [
-				'financial_performance' => $financial_performance,
-				'penjualan_neto_image' => $chart_images['penjualan_neto'],
-				'b_image' => $chart_images['b'],
-				'c_image' => $chart_images['c'],
-				'd_image' => $chart_images['d']]);
-		
-				$html = view('user/finance/financial_performance', [
-				'financial_performance' => $financial_performance,
-				'image_urls' => $image_urls
-			]);
-		*/
 		$dompdf->loadHtml($html);
 	  	$dompdf->render();
 	  
