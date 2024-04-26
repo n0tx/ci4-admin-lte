@@ -23,12 +23,6 @@
 
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-light-navy elevation-4">
-  <!-- Brand Logo -->
-  <a href="/" class="brand-link">
-    <img src="/logo_light.png" alt="AdminLTE Logo" class="brand-image" style="opacity: .8">
-    <span class="brand-text font-weight-light">Template</span>
-  </a>
-
   <!-- Sidebar -->
   <div class="sidebar">
     <!-- Sidebar user panel (optional) -->

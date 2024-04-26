@@ -25,12 +25,6 @@
 
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-navy elevation-4">
-  <!-- Brand Logo -->
-  <a href="/" class="brand-link">
-    <img src="/logo_dark.png" alt="AdminLTE Logo" class="brand-image" style="opacity: .8">
-    <span class="brand-text font-weight-light">Template</span>
-  </a>
-
   <!-- Sidebar -->
   <div class="sidebar">
     <!-- Sidebar user panel (optional) -->
