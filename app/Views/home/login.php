@@ -7,7 +7,7 @@
     <div class="justify-content-center container d-flex flex-column" style="min-height: 100vh; max-width: 476px">
         <p class="mt-5"><a href="/"><img src="https://www.listrindo.com/assets/img/logo-header.png" alt="Listrindo Logo" width="350px"></a></p>
         <form method="POST" name="loginForm" class="container shadow d-flex flex-column justify-content-center pb-1 pt-3 text-white">
-            <h1 class="mb-4">Enter to Listrindo</h1>
+            <h2 class="mb-4">Enter to Listrindo</h2>
             <input type="text" name="email" placeholder="Email" class="form-control mb-2">
             <input type="password" name="password" autocomplete="current-password" placeholder="Password" class="form-control mb-2">
             <input type="submit" value="Sign In" class="btn-primary btn btn-block mb-3">
