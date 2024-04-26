@@ -8,31 +8,7 @@
     <li class="nav-item d-none d-sm-inline-block <?= ($page ?? '') == 'home' ? 'active' : '' ?>">
       <a href="/" class="nav-link">Home</a>
     </li>
-    <li class="nav-item d-none d-sm-inline-block dropdown">
-      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        About
-      </a>
-      <div class="dropdown-menu" aria-labelledby="navbarDropdown2">
-        <a class="dropdown-item" href="/article/1/about_us">About Us</a>
-        <a class="dropdown-item" href="/article/2/faq">FAQ</a>
-        <a class="dropdown-item" href="/article/3/contact">Contact</a>
-        <a class="dropdown-item" href="/article/4/privacy">Privacy</a>
-        <a class="dropdown-item" href="/article/5/service">Service</a>
-      </div>
-    </li>
   </ul>
-
-  <!-- SEARCH FORM -->
-  <form action="/search" class="form-inline ml-3">
-    <div class="input-group input-group-sm">
-      <input name="q" class="form-control text-white form-control-navbar" value="<?= esc($search ?? '') ?>" type="search" placeholder="Search Articles" aria-label="Search">
-      <div class="input-group-append">
-        <button class="btn btn-navbar" type="submit">
-          <i class="fas fa-search"></i>
-        </button>
-      </div>
-    </div>
-  </form>
 
   <!-- Right navbar links -->
   <ul class="navbar-nav ml-auto">
@@ -74,22 +50,6 @@
             <i class="nav-icon fas fa-home"></i>
             <p>
               Home
-            </p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="/category/news/" class="nav-link <?= ($page ?? '') == 'news' ? 'active' : '' ?>">
-            <i class="nav-icon fas fa-newspaper"></i>
-            <p>
-              News
-            </p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="/category/info/" class="nav-link <?= ($page ?? '') == 'info' ? 'active' : '' ?>">
-            <i class="nav-icon fas fa-info"></i>
-            <p>
-              Info
             </p>
           </a>
         </li>
