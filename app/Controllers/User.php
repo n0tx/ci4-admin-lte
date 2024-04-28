@@ -2,9 +2,7 @@
 
 namespace App\Controllers;
 
-use App\Entities\Article;
 use App\Entities\User as EntitiesUser;
-use App\Models\ArticleModel;
 use App\Models\UserModel;
 use App\Entities\FinancialPerformance;
 use App\Models\FinancialPerformanceModel;
@@ -41,41 +39,6 @@ class User extends BaseController
 	{
 		$this->session->destroy();
 		return $this->response->redirect('/');
-	}
-
-
-	public function article($page = 'list', $id = null)
-	{
-		$model = new ArticleModel();
-		if ($this->login->role !== 'admin') {
-			$model->withUser($this->login->id);
-		}
-		if ($this->request->getMethod() === 'post') {
-			if ($page === 'delete' && $model->delete($id)) {
-				return $this->response->redirect('/user/article/');
-			} else if ($id = $model->processWeb($id)) {
-				return $this->response->redirect('/user/article/');
-			}
-		}
-		switch ($page) {
-			case 'list':
-				return view('user/article/list', [
-					'data' => find_with_filter(empty($_GET['category']) ? $model : $model->withCategory($_GET['category'])),
-					'page' => 'article',
-				]);
-			case 'add':
-				return view('user/article/edit', [
-					'item' => new Article()
-				]);
-			case 'edit':
-				if (!($item = $model->find($id))) {
-					throw new PageNotFoundException();
-				}
-				return view('user/article/edit', [
-					'item' => $item
-				]);
-		}
-		throw new PageNotFoundException();
 	}
 
 	public function manage($page = 'list', $id = null)
@@ -144,7 +107,6 @@ class User extends BaseController
 	
 	public function finance($page = 'list', $id = null)
 	{
-    $method = $this->request->getMethod();
 		$model = new FinancialPerformanceModel();
 		// $test = $model->where('tahun', 2020)->countAllResults();
 		if ($model->where('tahun', '2005')->countAllResults() > 0) {
