@@ -1,29 +1,30 @@
 <div>
-    <?php foreach ($actions as $value) : ?>
+    <?php $method_path = '/user/finance/';
+    foreach ($actions as $value) : ?>
         <?php switch ($value) {
             case 'delete':
         ?>
-                <a href="<?= $value . '/' . $target ?>" class="btn <?= $size ?> btn-danger"><i class="fa fa-delete"></i></a>
+                <a href="<?= $method_path . $value . '/' . $target ?>" class="btn <?= $size ?> btn-danger"><i class="fa fa-delete"></i></a>
             <?php
                 break;
             case 'edit':
             ?>
-                <a href="<?= $value . '/' . $target ?>" class="btn <?= $size ?> btn-warning"><i class="fa fa-edit"></i></a>
+                <a href="<?= $method_path . $value . '/' . $target ?>" class="btn <?= $size ?> btn-warning"><i class="fa fa-edit"></i></a>
             <?php
                 break;
             case 'detail':
             ?>
-                <a href="<?= $value . '/' . $target ?>" class="btn <?= $size ?> btn-primary"><i class="fa fa-info-circle"></i></a>
+                <a href="<?= $method_path . $value . '/' . $target ?>" class="btn <?= $size ?> btn-primary"><i class="fa fa-info-circle"></i></a>
             <?php
                 break;
             case 'add':
             ?>
-                <a href="<?= $value . '/' . $target ?>" class="btn <?= $size ?> btn-success"><i class="fa fa-plus-circle"></i></a>
+                <a href="<?= $method_path . $value . '/' . $target ?>" class="btn <?= $size ?> btn-success"><i class="fa fa-plus-circle"></i></a>
             <?php
                 break;
             case 'generate_pdf':
             ?>
-                <a href="<?= $value . '/' . $target ?>" class="btn <?= $size ?> btn-success"><i class="fa fa-download"></i></a>
+                <a href="<?= $method_path . $value . '/' . $target ?>" class="btn <?= $size ?> btn-success"><i class="fa fa-download"></i></a>
             <?php
                 break;
             case 'view':
@@ -33,7 +34,7 @@
                 break;
             case 'download':
             ?>
-                <a href="<?= $value . '/' . $target ?>" class="btn <?= $size ?> btn-success"><i class="fa fa-download"></i></a>
+                <a href="<?= $method_path . $value . '/' . $target ?>" class="btn <?= $size ?> btn-success"><i class="fa fa-download"></i></a>
         <?php
                 break;
         } ?>
