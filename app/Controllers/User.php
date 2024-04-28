@@ -130,7 +130,9 @@ class User extends BaseController
 		switch ($page) {
 			case 'list':
 				return view('user/finance/list', [
-					'data' => get_financial_performance($model),
+					// 'data' => get_financial_performance($model), // keambil semua data admin / user
+					'data' => find_with_filter($model), // ok
+					// 'data' => $model->findAll(), // ok
 					'page' => 'finance',
 				]);
 			case 'add':
@@ -190,6 +192,7 @@ class User extends BaseController
 			$full_path = ROOTPATH . $relative_path . $image_name;
 
 			$response = $client->get($chart_url_encodes[$i]);
+			sleep(2);
 			$file = $response->getBody();
 			
 			if (file_put_contents($full_path, $file)) {

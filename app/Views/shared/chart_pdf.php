@@ -8,6 +8,7 @@ function ImageToDataUrl(String $filename) : String {
         throw new Exception('Illegal MIME type.');
 
     $raw_data = file_get_contents($filename);
+    sleep(2);
     if(empty($raw_data))
         throw new Exception('File not readable or empty.');
     
