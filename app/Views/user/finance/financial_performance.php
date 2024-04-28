@@ -2,14 +2,7 @@
 <html lang="en">
 <?= view('shared/head_pdf') ?>
 <body>
-    <!-- lempar kemari juga, tapi datanya uda gambar
-  <div> <img src= php $penjualan_neto> </div>
-  <div> <img src= php $blabla> </div>
-  <div> <img src= php $blabla> </div>
-  -->
-
         <?= view('shared/chart_pdf', ['image_urls' => $image_urls]) ?>
-
         <?= view('shared/table_pdf', [
           'data' => $financial_performance,
           'columns' => [
