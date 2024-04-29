@@ -63,4 +63,10 @@
   </div>
 </body>
 
+<script>
+const button = document.getElementById('generatePdf');
+button.addEventListener('click', function() {
+  alert("Please wait, the PDF is being generated");
+  }); 
+</script>
 </html>

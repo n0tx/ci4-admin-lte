@@ -24,7 +24,7 @@
                 break;
             case 'generate_pdf':
             ?>
-                <a href="<?= $method_path . $value . '/' . $target ?>" class="btn <?= $size ?> btn-success"><i class="fa fa-download"></i></a>
+                <a href="<?= $method_path . $value . '/' . $target ?>" class="btn <?= $size ?> btn-success" id="generatePdf""><i class="fa fa-download"></i></a>
             <?php
                 break;
             case 'view':

@@ -117,10 +117,10 @@ class User extends BaseController
 			} else {
 			  if ($model->checkDuplicateYear($id, $this->request->getPost('tahun'))) {
 			  echo '
-        <script>
-            alert("Duplicate years exist");
-            window.location="'.base_url('/user/finance/').'";
-        </script>';
+				<script>
+					alert("Duplicate years exist");
+					window.location="'.base_url('/user/finance/').'";
+				</script>';
 			  } else {
 			    $model->processWeb($id);
 			    return $this->response->redirect('/user/finance/');
